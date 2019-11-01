@@ -2,9 +2,9 @@
   "description": "hakaru app",
 
   "variables": {
-    "AWS_ACCOUNT_ID": "アカウントID",
-    "subnet_id": "パブリックのサブネットID",
-    "security_group_id": "hakaruと名付けられたセキュリティグループID"
+    "AWS_ACCOUNT_ID": "727868875181",
+    "subnet_id": "subnet-0d5ef7b18445f0da4",
+    "security_group_id": "sg-0e7591374f4460444"
   },
 
   "builders": [
