@@ -1,7 +1,7 @@
 # packer wrapper
 #
 
-export AWS_PROFILE        ?= sunrise201911
+export AWS_PROFILE        ?= sunrise201911-team-d
 export AWS_DEFAULT_REGION := ap-northeast-1
 
 #ARTIFACTS_COMMIT ?= $(shell git rev-parse HEAD)

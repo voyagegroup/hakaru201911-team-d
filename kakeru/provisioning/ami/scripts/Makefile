@@ -4,7 +4,7 @@
 #
 .PHONY: all cloud-config apt awscli ssh ulimit
 
-all: cloud-config apt awscli ssh ulimit deploy
+all: cloud-config apt awscli ssh ulimit /opt/kakeru/Makefile deploy
 
 cloud-config: cloud.cfg.d/99_defaults.cfg
 	cp cloud.cfg.d/99_defaults.cfg /etc/cloud/cloud.cfg.d/
@@ -13,7 +13,7 @@ cloud-config: cloud.cfg.d/99_defaults.cfg
 
 apt:
 	apt-get -y update
-	apt-get -y upgrade
+	DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 	apt-get -y install tsung python3 zip unzip
 
 awscli: apt
@@ -40,7 +40,7 @@ ulimit:
 /opt/kakeru:
 	mkdir -p /opt/kakeru
 
-/opt/kakeru/Makefile: Makefile
+/opt/kakeru/Makefile: Makefile /opt/kakeru
 	cp Makefile /opt/kakeru/Makefile
 
 # application deployment
@@ -48,7 +48,7 @@ ulimit:
 # /opt/kakeru/Makefile on ec2 instance
 #
 
-ARTIFACTS_BUCKET ?= sunrise201911-kakeru-artifacts
+ARTIFACTS_BUCKET ?= sunrise201911-team-d-kakeru-artifacts
 ARTIFACTS_COMMIT ?= latest
 
 deploy: clean /opt/kakeru/app

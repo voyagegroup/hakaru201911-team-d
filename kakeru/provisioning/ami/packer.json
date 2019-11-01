@@ -2,9 +2,9 @@
   "description": "kakeru app",
 
   "variables": {
-    "AWS_ACCOUNT_ID": "アカウントID",
-    "subnet_id": "パブリックのサブネットID",
-    "security_group_id": "kakeruと名付けられたセキュリティグループID"
+    "AWS_ACCOUNT_ID": "727868875181",
+    "subnet_id": "subnet-04d4900c51505652e",
+    "security_group_id": "sg-046acc384a80e8196"
   },
 
   "builders": [
@@ -24,7 +24,7 @@
         "SourceAMI": "{{ .SourceAMI }}",
         "SourceAMIName": "{{ .SourceAMIName }}"
       },
-      "source_ami": "ami-0238fc6af6bba5241",
+      "source_ami": "ami-0d5db3e2a1b98ca94",
 
       "subnet_id": "{{user  `subnet_id`}}",
       "security_group_id": "{{user `security_group_id`}}",

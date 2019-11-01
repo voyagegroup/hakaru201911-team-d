@@ -1,6 +1,6 @@
 export AWS_DEFAULT_REGION ?= ap-northeast-1
 
-REPORT_BUCKET := sunrise201911-kakeru-report
+REPORT_BUCKET := sunrise201911-team-d-kakeru-report
 
 HOST:=localhost
 PORT:=80

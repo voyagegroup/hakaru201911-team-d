@@ -4,6 +4,8 @@
 
 hakaru
 vendor
+_deploy
 *.tgz
+*.zip
 
 /db/data
