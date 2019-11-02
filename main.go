@@ -18,7 +18,6 @@ func initDB() *sql.DB {
 	if err != nil {
 		panic(err.Error())
 	}
-	defer db.Close()
 	return db
 }
 func main() {
