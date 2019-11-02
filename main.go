@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"log"
 
 	"database/sql"
-
+	_ "github.com/go-sql-driver/mysql"
 	"os"
 )
 
