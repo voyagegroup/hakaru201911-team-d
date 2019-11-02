@@ -3,7 +3,7 @@
 # /root/hakaru/app/provisioning/instance/Makefile on ec2 instance
 #
 
-AWS_DEFAUTL_REGION := ap-norhteast-1
+AWS_DEFAULT_REGION := ap-norhteast-1
 
 .PHONY: all clean hakaru amazon-cloudwatch-agent healthcheck
 
@@ -22,8 +22,11 @@ clean:
 	chmod +x /opt/hakaru/bin/hakaru
 
 /etc/sysconfig/hakaru:
-	echo "HAKARU_DATASOURCENAME=hakaru:$$(aws ssm get-parameter --name "/hakaru/rds/hakaru/password" --with-decryption --output text --query Parameter.Value)@tcp($$(aws rds describe-db-instances --db-instance-identifier hakaru --output text --query "DBInstances[0].Endpoint.Address"))/hakaru" > /etc/sysconfig/hakaru
+	echo "HAKARU_DATASOURCENAME=hakaru:$$(aws --region ap-northeast-1 ssm get-parameter --name "/hakaru/rds/hakaru/password" --with-decryption --output text --query Parameter.Value)@tcp($$(aws --region ap-northeast-1 rds describe-db-instances --db-instance-identifier hakaru --output text --query "DBInstances[0].Endpoint.Address"))/hakaru" > /etc/sysconfig/hakaru
 
+/etc/systemd/system/hakaru.service: systemd/hakaru.service /opt/hakaru/bin/hakaru /etc/sysconfig/hakaru
+	cp systemd/hakaru.service /etc/systemd/system/hakaru.service
+0
 /etc/systemd/system/hakaru.service: systemd/hakaru.service /opt/hakaru/bin/hakaru /etc/sysconfig/hakaru
 	cp systemd/hakaru.service /etc/systemd/system/hakaru.service
 	systemctl daemon-reload
