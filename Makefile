@@ -20,6 +20,9 @@ fmt:
 test:
 	go test -v -tags=unit $$(go list ./... | grep -v '/vendor/')
 
+test/curl:
+	curl -v localhost:8081/hakaru?name=denden&value=10
+
 run: main.go
 	go run main.go
 
@@ -35,7 +38,7 @@ mysql_run:
 	docker run --rm -d \
 	  --name sunrise2019-hakaru-db \
 	  -e MYSQL_ROOT_PASSWORD=password \
-	  -e MYSQL_DAATBASE=hakaru \
+	  -e MYSQL_DATABASE=hakaru \
 	  -e TZ=Asia/Tokyo \
 	  -p 13306:3306 \
 	  -v $(CURDIR)/db/data:/var/lib/mysql \
@@ -44,6 +47,8 @@ mysql_run:
 	  mysql:5.6 \
 	  mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
+mysql_connect:
+	mysql -P 13306 -u root -h 127.0.0.1 -p
 # deployment
 
 artifacts.tgz: provisioning/instance
