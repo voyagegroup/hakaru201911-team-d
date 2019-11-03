@@ -29,6 +29,9 @@ func main() {
 	db := initDB()
 
 	defer db.Close()
+	// connectionする数を制限する
+	// RDS が 66 のConnectionができるので、５台のインスタンスを立てることを想定し、 66/5=15...1
+	db.SetMaxOpenConns(13)
 
 	hakaruHandler := func(w http.ResponseWriter, r *http.Request) {
 
