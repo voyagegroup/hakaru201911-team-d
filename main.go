@@ -28,6 +28,8 @@ func main() {
 
 	db := initDB()
 
+	defer db.Close()
+
 	hakaruHandler := func(w http.ResponseWriter, r *http.Request) {
 
 		stmt, e := db.Prepare("INSERT INTO eventlog(at, name, value) values(NOW(), ?, ?)")
