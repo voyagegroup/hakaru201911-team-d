@@ -76,7 +76,7 @@ new_instance:
 
 
 tes:
-	cd _files && \
+	cd _files \
 	aws ec2 describe-instances \
 	--profile sunrise201911-team-d \
 	--region ap-northeast-1 \
@@ -86,4 +86,4 @@ tes:
 	.InstanceId' |\
 	uniq |\
 	sed '/s\"/d' |\
-	AWS_PROFILE=sunrise201911-team-d xargs -IIP_ADDR ssh -i id_rsa ec2-user@IP_ADDR "sudo make -C /root/hakaru/ deploy ARTIFACTS_COMMIT=latest"
+	AWS_PROFILE=sunrise201911-team-d xargs -IIP_ADDR ssh -i id_rsa ec2-user@IP_ADDR "ulimit -n 4096"
