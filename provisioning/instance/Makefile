@@ -31,7 +31,7 @@ clean:
 	systemctl list-unit-files --type=service | grep hakaru
 
 hakaru: /etc/systemd/system/hakaru.service
-	systemctl start hakaru
+	ulimit -n 4096 && systemctl start hakaru
 	systemctl enable hakaru
 
 healthcheck:

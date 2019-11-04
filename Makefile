@@ -66,12 +66,13 @@ upload: clean artifacts.tgz
 new_instance:
 	aws ec2 run-instances \
 		--count $(COUNT) \
+		--key-name sunrise2019 \
 		--user-data file://user_data.sh \
 		--tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hakaru-from-cli}]' \
-		--image-id ami-038456c23bd2a69e9 \
+		--image-id  \
 		--security-group-ids sg-0e7591374f4460444  \
 		--instance-type c5.large \
-		--subnet-id subnet-020c52b7776a2c1f3 \
+		--subnet-id subnet-06487332afd2f4a55 \
 		--iam-instance-profile Name="hakaru"
 
 
