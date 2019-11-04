@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"database/sql"
 
@@ -10,6 +11,11 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
+type DBStruct struct {
+	Name  string
+	Value string
+}
 
 func initDB() *sql.DB {
 	dataSourceName := os.Getenv("HAKARU_DATASOURCENAME")
@@ -24,6 +30,23 @@ func initDB() *sql.DB {
 	return db
 }
 
+// BulkInsert is
+func BulkInsert(resc []DBStruct, db *sql.DB) (err error) {
+	rescInterface := []interface{}{}
+	stmt := "INSERT INTO eventlog(at, name, value) values"
+
+	for _, value := range resc {
+		stmt += "(Now(),?,?),"
+		rescInterface = append(rescInterface, value.Name)
+		rescInterface = append(rescInterface, value.Value)
+	}
+
+	stmt = strings.TrimRight(stmt, ",")
+
+	_, err = db.Exec(stmt, rescInterface...)
+	return
+}
+
 func main() {
 
 	db := initDB()
@@ -33,19 +56,20 @@ func main() {
 	// RDS が 66 のConnectionができるので、５台のインスタンスを立てることを想定し、 66/5=15...1
 	db.SetMaxOpenConns(6)
 
+	var values []DBStruct
+	// t := time.Now()
+
 	hakaruHandler := func(w http.ResponseWriter, r *http.Request) {
-
-		stmt, e := db.Prepare("INSERT INTO eventlog(at, name, value) values(NOW(), ?, ?)")
-		if e != nil {
-			panic(e.Error())
-		}
-
-		defer stmt.Close()
 
 		name := r.URL.Query().Get("name")
 		value := r.URL.Query().Get("value")
 
-		_, _ = stmt.Exec(name, value)
+		values = append(values, DBStruct{Name: name, Value: value})
+
+		if len(values) > 10 {
+			BulkInsert(values, db)
+			values = nil
+		}
 
 		origin := r.Header.Get("Origin")
 		if origin != "" {
