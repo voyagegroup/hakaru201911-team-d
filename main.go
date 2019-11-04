@@ -67,7 +67,7 @@ func main() {
 		values = append(values, DBStruct{Name: name, Value: value})
 
 		if len(values) > 10 {
-			BulkInsert(values, db)
+			go BulkInsert(values, db)
 			values = nil
 		}
 
