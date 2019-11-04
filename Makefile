@@ -73,3 +73,17 @@ new_instance:
 		--instance-type c5.large \
 		--subnet-id subnet-020c52b7776a2c1f3 \
 		--iam-instance-profile Name="hakaru"
+
+
+tes:
+	cd _files && \
+	aws ec2 describe-instances \
+	--profile sunrise201911-team-d \
+	--region ap-northeast-1 \
+	--filters Name=instance-state-name,Values=running |\
+	jq '.Reservations[].Instances[] |\
+	select( .Tags[].Key == "Name" and (.Tags[].Value | test("^hakaru"))) |\
+	.InstanceId' |\
+	uniq |\
+	sed '/s\"/d' |\
+	AWS_PROFILE=sunrise201911-team-d xargs -IIP_ADDR ssh -i id_rsa ec2-user@IP_ADDR "sudo make -C /root/hakaru/ deploy ARTIFACTS_COMMIT=latest"
