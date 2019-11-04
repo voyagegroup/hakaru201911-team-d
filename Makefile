@@ -69,7 +69,7 @@ new_instance:
 		--key-name sunrise2019 \
 		--user-data file://user_data.sh \
 		--tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=hakaru-from-cli}]' \
-		--image-id  \
+		--image-id ami-0dc6cd9c334f3da26 \
 		--security-group-ids sg-0e7591374f4460444  \
 		--instance-type c5.large \
 		--subnet-id subnet-06487332afd2f4a55 \
