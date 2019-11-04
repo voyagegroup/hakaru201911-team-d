@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -36,6 +37,7 @@ func BulkInsert(resc []DBStruct, db *sql.DB) (err error) {
 	stmt := "INSERT INTO eventlog(at, name, value) values"
 
 	for _, value := range resc {
+		fmt.Println(value)
 		stmt += "(Now(),?,?),"
 		rescInterface = append(rescInterface, value.Name)
 		rescInterface = append(rescInterface, value.Value)
@@ -55,19 +57,17 @@ func main() {
 	// connectionする数を制限する
 	// RDS が 66 のConnectionができるので、５台のインスタンスを立てることを想定し、 66/5=15...1
 	db.SetMaxOpenConns(6)
-
 	var values []DBStruct
 	// t := time.Now()
 
 	hakaruHandler := func(w http.ResponseWriter, r *http.Request) {
-
 		name := r.URL.Query().Get("name")
 		value := r.URL.Query().Get("value")
 
 		values = append(values, DBStruct{Name: name, Value: value})
 
 		if len(values) > 10 {
-			BulkInsert(values, db)
+			go BulkInsert(values, db)
 			values = nil
 		}
 
