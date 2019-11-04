@@ -24,11 +24,6 @@ test:
 test/curl:
 	curl -v localhost:8081/hakaru?name=denden&value=10
 
-test/bulk:
-	for i in 1 2 3 4 5 6 7 8 9 10; do\
-		curl -v localhost:8081/hakaru?name=denden&value=1;\
-	done
-
 run: main.go
 	go run main.go
 
