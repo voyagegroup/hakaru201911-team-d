@@ -1,4 +1,4 @@
-FROM ubuntu:18.10
+FROM ubuntu:cosmic-20190719
 
 ENV DEBIAN_FRONTEND=noninteractive
 
